@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="NIVINO - Svatební noviny na míru. Tvorba personalizovaných tiskovin pro váš výjimečný den.">
+    <meta name="keywords" content="NIVINO, svatební noviny, personalizované noviny, svatba, tiskoviny na míru">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="NIVINO">
+    <title>NIVINO - Svatební Noviny na Míru</title>
+    <style>
+        /* CSS proměnné pro světlý režim */
+        :root {
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --header-footer-bg: #1a1a1a;
+            --nav-link-color: #ffadad;
+            --button-bg: #ffadad;
+            --button-hover-bg: #ff8080;
+            --section-bg: #fff;
+            --input-border: #ccc;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* CSS proměnné pro tmavý režim */
+        body.dark-mode {
+            --background-color: #121212;
+            --text-color: #e0e0e0;
+            --header-footer-bg: #1e1e1e;
+            --nav-link-color: #ffadad;
+            --button-bg: #ff5c5c;
+            --button-hover-bg: #ff8080;
+            --section-bg: #1e1e1e;
+            --input-border: #555;
+            --shadow-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Upravené styly pro header a navigaci */
+        header {
+            background-color: var(--header-footer-bg);
+            padding: 10px 20px;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--nav-link-color);
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+        }
+
+        /* Přesunutí dark mode tlačítka pod menu */
+        .dark-mode-toggle {
+            display: block;
+            margin: 40px auto 0 auto; /* Zvýšení margin-top pro posunutí dolů */
+            background: none;
+            border: none;
+            color: var(--nav-link-color);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Logo umístěné nad bannerem */
+        .logo {
+            position: absolute;
+            top: 130px; /* Úprava pozice kvůli přesunutí tlačítka */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .banner {
+            background: url('banner-image.jpg') no-repeat center center/cover;
+            height: 60vh;
+            position: relative;
+            margin-top: 50px; /* Odsazení kvůli fixní navigaci */
+        }
+
+        .banner .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .banner h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .cta-buttons {
+            margin-top: 20px;
+        }
+
+        .cta-buttons a {
+            margin: 10px;
+            padding: 12px 30px;
+            background-color: var(--button-bg);
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .cta-buttons a:hover {
+            background-color: var(--button-hover-bg);
+            transform: translateY(-3px);
+        }
+
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: var(--section-bg);
+            margin: 40px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        /* Galerie produktů */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .gallery img {
+            max-width: 300px;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .testimonial-item {
+            max-width: 600px;
+            margin: 20px;
+            position: relative;
+            padding: 20px;
+            background-color: var(--section-bg);
+            border-left: 5px solid var(--button-bg);
+            text-align: left;
+        }
+
+        .testimonial-item h3 {
+            margin-top: 0;
+        }
+
+        .stars {
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        /* Příběh nevěsty a ženicha */
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .story img {
+            max-width: 300px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Formulář */
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--input-border);
+            font-size: 1rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--button-bg);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group button {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-group button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* QR Code Section */
+        .qr-code {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .qr-code a {
+            background-color: var(--button-bg);
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        .qr-code a:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        footer {
+            background-color: var(--header-footer-bg);
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .social-media {
+            margin-top: 10px;
+        }
+
+        .social-media a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        /* Chatbot styl */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--button-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            z-index: 1000;
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background-color: var(--button-bg);
+            padding: 10px;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chatbot-input {
+            padding: 10px;
+            display: flex;
+            border-top: 1px solid var(--input-border);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            margin-right: 5px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .chatbot-input button {
+            padding: 8px 12px;
+            background-color: var(--button-bg);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Responzivita */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons a {
+                padding: 10px 20px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .chatbot-window {
+                width: 90%;
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner h1 {
+                font-size: 1.5rem;
+            }
+
+            .cta-buttons a {
+                padding: 8px 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            .logo {
+                top: 160px; /* Úprava pozice pro menší obrazovky */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav aria-label="Hlavní navigace">
+            <ul>
+                <li><a href="#uvod">Úvod</a></li>
+                <li><a href="#o-nas">O NIVINO</a></li>
+                <li><a href="#produkty">Produkty</a></li>
+                <li><a href="#galerie">Galerie</a></li>
+                <li><a href="#pribeh">Příběh</a></li>
+                <li><a href="#reference">Reference</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Tlačítko pro přepínání dark mode pod menu -->
+    <button class="dark-mode-toggle" aria-label="Přepnout dark mode">🌙</button>
+
+    <!-- Logo umístěné nad bannerem -->
+    <div class="logo">
+        <img src="logo.png" alt="Logo NIVINO">
+    </div>
+
+    <main>
+        <section id="uvod" class="banner">
+            <div class="content">
+                <h1>NIVINO - Vyprávějte váš příběh</h1>
+                <div class="cta-buttons">
+                    <a href="#produkty">Svatební noviny na míru</a>
+                    <a href="#produkty">Šablony</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="o-nas" class="section">
+            <h2>O NIVINO</h2>
+            <p>NIVINO je společnost specializující se na tvorbu personalizovaných svatebních novin. Náš tým je oddaný zachycení jedinečných příběhů každého páru.</p>
+        </section>
+
+        <section id="galerie" class="section">
+            <h2>Galerie</h2>
+            <div class="gallery">
+                <img src="noviny1.jpg" alt="Ukázka svatebních novin 1">
+                <img src="noviny2.jpg" alt="Ukázka svatebních novin 2">
+                <img src="noviny3.jpg" alt="Ukázka svatebních novin 3">
+                <!-- Další obrázky podle potřeby -->
+            </div>
+        </section>
+
+        <section id="produkty" class="section">
+            <h2>Naše produkty</h2>
+            <p>Nabízíme personalizované svatební noviny na míru, které zachytí jedinečný příběh vašeho velkého dne.</p>
+            <!-- Můžete přidat další obsah nebo obrázky produktů -->
+        </section>
+
+        <!-- Příběh nevěsty a ženicha -->
+        <section id="pribeh" class="section">
+            <h2>Příběh nevěsty a ženicha</h2>
+            <div class="story">
+                <img src="pribeh.jpg" alt="Nevěsta a ženich">
+                <p>Seznamte se s Lenkou a Tomášem, kteří se rozhodli sdílet svůj jedinečný příběh prostřednictvím našich svatebních novin. Jejich cesta k oltáři byla plná nezapomenutelných okamžiků, které jsme pomohli zachytit a sdílet s jejich nejbližšími.</p>
+            </div>
+        </section>
+
+        <section id="reference" class="section">
+            <h2>Co o nás říkají naši zákazníci</h2>
+            <div class="testimonials">
+                <div class="testimonial-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Svatební noviny od NIVINO byly nádherné a hosté je milovali!"</p>
+                    <h3>- Jana a Petr</h3>
+                </div>
+                <div class="testimonial-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Skvělá spolupráce a úžasný výsledek. Doporučujeme všem."</p>
+                    <h3>- Lucie a Martin</h3>
+                </div>
+                <!-- Přidejte další reference -->
+            </div>
+            <!-- Možnost hodnocení stránky -->
+            <div class="rate-site">
+                <h3>Ohodnoťte naše stránky</h3>
+                <div class="stars-rating">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                </div>
+                <p id="rating-result"></p>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <h2>Často kladené dotazy</h2>
+            <div class="faq-item">
+                <h3>Jak dlouho trvá výroba svatebních novin?</h3>
+                <p>Obvykle potřebujeme 2-3 týdny od objednání do dodání.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Můžeme si vybrat vlastní design?</h3>
+                <p>Ano, nabízíme plně personalizované návrhy podle vašich představ.</p>
+            </div>
+            <!-- Další dotazy -->
+        </section>
+
+        <section id="kontakt" class="section form-container">
+            <h2>Objednávkový formulář</h2>
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="name">Jméno:</label>
+                    <input type="text" id="name" name="name" required placeholder="Vaše jméno" oninput="validateName()">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Váš email" oninput="validateEmail()">
+                </div>
+                <div class="form-group">
+                    <label for="message">Personalizovaný text:</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Váš text" oninput="validateMessage()"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photos">Nahrát fotografie:</label>
+                    <input type="file" id="photos" name="photos" accept="image/*" multiple required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Odeslat</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- QR kód -->
+        <section class="qr-code">
+            <h2>Kontaktujte nás přes QR kód</h2>
+            <img src="qr_code.png" alt="QR kód">
+            <a href="#kontakt">Kontaktujte nás</a>
+        </section>
+    </main>
+
+    <!-- Chatbot -->
+    <div class="chatbot" id="chatbot">
+        💬
+    </div>
+    <div class="chatbot-window" id="chatbot-window">
+        <div class="chatbot-header">
+            <span>Chatbot</span>
+            <button id="chatbot-close">✖</button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <!-- Zde se zobrazí zprávy -->
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Napište zprávu...">
+            <button id="chatbot-send">Odeslat</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 NIVINO. Všechna práva vyhrazena.</p>
+        <div class="social-media">
+            <a href="https://www.facebook.com/nivino" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/nivino" target="_blank">Instagram</a>
+            <!-- Další odkazy -->
+        </div>
+    </footer>
+
+    <script>
+        // Přepínání dark mode
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        const body = document.body;
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            // Uložení preference do localStorage
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.textContent = '🌙';
+            }
+        });
+
+        // Načtení preference z localStorage
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeToggle.textContent = '☀️';
+            }
+        });
+
+        // Ošetření odeslání formuláře
+        document.getElementById('order-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Zabrání odeslání formuláře
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const photos = document.getElementById('photos').files;
+
+            if (name && email && message && photos.length > 0) {
+                alert('Formulář byl úspěšně odeslán!');
+                // Zde můžete přidat kód pro odeslání formuláře na server
+                this.reset();
+            } else {
+                alert('Prosím vyplňte všechna pole a nahrajte fotografie.');
+            }
+        });
+
+        // Validace formuláře v reálném čase
+        function validateName() {
+            const nameField = document.getElementById('name');
+            nameField.style.borderColor = nameField.value.trim() ? 'green' : 'red';
+        }
+
+        function validateEmail() {
+            const emailField = document.getElementById('email');
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value);
+            emailField.style.borderColor = isValid ? 'green' : 'red';
+        }
+
+        function validateMessage() {
+            const messageField = document.getElementById('message');
+            messageField.style.borderColor = messageField.value.trim() ? 'green' : 'red';
+        }
+
+        // Smooth scroll pro navigaci mezi sekcemi
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Hodnocení hvězdičkami
+        const stars = document.querySelectorAll('.stars-rating .star');
+        const ratingResult = document.getElementById('rating-result');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-value');
+                stars.forEach(s => s.textContent = '☆');
+                for (let i = 0; i < rating; i++) {
+                    stars[i].textContent = '★';
+                }
+                ratingResult.textContent = `Děkujeme za hodnocení ${rating} z 5 hvězdiček.`;
+                // Zde můžete přidat kód pro odeslání hodnocení na server
+            });
+        });
+
+        // Chatbot funkčnost
+        const chatbotIcon = document.getElementById('chatbot');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+
+        chatbotIcon.addEventListener('click', () => {
+            chatbotWindow.style.display = 'flex';
+            chatbotIcon.style.display = 'none';
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.style.display = 'none';
+            chatbotIcon.style.display = 'flex';
+        });
+
+        chatbotSend.addEventListener('click', sendMessage);
+        chatbotInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const messageText = chatbotInput.value.trim();
+            if (messageText !== '') {
+                // Zobrazit uživatelskou zprávu
+                appendMessage('Vy', messageText);
+                chatbotInput.value = '';
+
+                // Zde byste měli poslat zprávu na server a získat odpověď
+                fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: messageText })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Zobrazit odpověď chatbota
+                    appendMessage('Chatbot', data.reply);
+                })
+                .catch(error => {
+                    console.error('Chyba:', error);
+                    appendMessage('Chatbot', 'Omlouvám se, nastala chyba při zpracování vaší zprávy.');
+                });
+            }
+        }
+
+        function appendMessage(sender, text) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${sender}: ${text}`;
+            chatbotMessages.appendChild(messageElement);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
